@@ -313,11 +313,6 @@ The latest development information, known issues, compatibility notes, and techn
 
 For bug reports and feature requests, use the repository issue tracker.
 
----
-
-## License
-
-License information will be provided as the project approaches public release.
 
 ---
 
