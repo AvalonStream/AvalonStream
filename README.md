@@ -1,325 +1,95 @@
-<div align="center">
-
 # Avalon
 
-### One Windows 11 PC. Multiple independent desktops.
+### One Windows 10/11 x64 PC. Multiple independent desktops.
 
-Turn a single Windows 11 machine into multiple independently accessible desktop instances, each with its own display, input, audio, applications, and remote streaming connection.
+Avalon turns one Windows 10/11 x64 host into multiple independently accessible desktop instances. Each instance can have its own Windows session, virtual display, input, audio, applications, games, and Moonlight connection.
 
 **One host. Multiple instances.**
 
-[简体中文](README-zh-CN.md)
+## Languages
 
-</div>
+[English](README.md) · [简体中文](README-zh-CN.md) · [繁體中文](README-zh-TW.md) · [日本語](README-ja.md) · [한국어](README-ko.md) · [Español](README-es.md) · [Português (Brasil)](README-pt-BR.md) · [Deutsch](README-de.md) · [Français](README-fr.md) · [Italiano](README-it.md) · [Polski](README-pl.md) · [Русский](README-ru.md) · [Türkçe](README-tr.md) · [العربية](README-ar.md) · [हिन्दी](README-hi.md) · [Bahasa Indonesia](README-id.md) · [Tiếng Việt](README-vi.md) · [ไทย](README-th.md)
+
+[Development log & feedback](https://github.com/AvalonStream/AvalonStream/blob/main/devlog.md) · [Issues / bug reports](https://github.com/AvalonStream/AvalonStream/issues)
 
 ---
 
 ## What is Avalon?
 
-Avalon is a multi-session desktop streaming platform for Windows 11.
-
-Instead of letting one PC serve only one interactive desktop at a time, Avalon allows the same machine to host multiple independent Windows instances simultaneously.
-
-Each instance can have its own:
-
-- Windows desktop session
-- Virtual display
-- Resolution and refresh rate
-- Input stream
-- Audio stream
-- Applications and games
-- Remote Moonlight connection
-
-This makes it possible for one powerful PC to behave more like several remotely accessible computers, without requiring a full virtual machine for every user.
-
----
-
-## What does this look like?
-
-Imagine one Windows 11 PC running three Avalon instances:
-
-```text
-                Windows 11 Host
-                       │
-                ┌──────┴──────┐
-                │    Avalon    │
-                └──────┬──────┘
-                       │
-         ┌─────────────┼─────────────┐
-         │             │             │
-         ▼             ▼             ▼
-    Instance 01    Instance 02    Instance 03
-         │             │             │
-         ▼             ▼             ▼
-     Moonlight      Moonlight      Moonlight
-        TV            Tablet         Laptop
-```
-
-Each client connects to its own Windows desktop.
-
-The instances run side by side without sharing the same desktop, mouse cursor, audio output, or application session.
-
----
-
-## Why Avalon?
-
-Traditional remote desktop tools are usually designed around one user controlling one desktop.
-
-Virtual machines solve isolation well, but they also add additional operating systems, memory overhead, storage usage, GPU complexity, and management cost.
-
-Avalon takes a different approach.
-
-It builds on Windows sessions, virtual displays, independent streaming processes, and centralized lifecycle management so that multiple interactive desktops can coexist on one Windows 11 host.
-
-The complexity stays inside Avalon.
-
-For the user, the workflow is simple:
-
-```text
-Create an instance
-        ↓
-Configure display and pairing
-        ↓
-Open Moonlight
-        ↓
-Connect
-```
+Avalon is a multi-session desktop streaming platform for Windows 10/11 x64. Instead of dedicating the whole PC to one interactive desktop, Avalon lets several independent Windows instances run side by side on the same host without requiring a full virtual machine for every user.
 
 ---
 
 ## Core capabilities
 
-### Multiple independent instances
+- Multiple independent Windows instances on one host
+- A dedicated streaming context for every instance
+- Per-instance virtual display, resolution and refresh rate
+- Independent keyboard, mouse and session audio paths
+- Session lifecycle managed by Avalon without keeping an external RDP client connected
+- Web-based creation, pairing, status and diagnostics
+- Moonlight remains the client experience on phones, tablets, TVs and PCs
 
-Run multiple Windows desktop sessions on the same host at the same time.
+---
 
-Each instance behaves as its own interactive desktop environment.
+## How it works
 
-### Independent streaming
+Create an instance, choose its display settings and pair a client. Avalon prepares the Windows session, virtual display, streaming context and lifecycle; then you connect with Moonlight.
 
-Every instance has its own streaming context and can be connected to independently using a Moonlight client.
-
-A television can connect to one instance while a tablet or another computer connects to another.
-
-### Independent display
-
-Each instance can use its own virtual display configuration, including resolution and refresh rate.
-
-Display handling is managed by Avalon rather than requiring a physical monitor for every instance.
-
-### Independent input
-
-Keyboard and mouse input are routed to the intended Windows session instead of being shared across instances.
-
-Avalon is also designed around per-instance device isolation as the input stack continues to evolve.
-
-### Independent audio
-
-Each instance uses its own Windows session audio path so users can listen to different applications or games without mixing audio between instances.
-
-### Session lifecycle management
-
-Avalon creates and maintains sessions itself.
-
-A separate external RDP client does not need to remain connected just to keep an instance alive.
-
-### Web management
-
-Instances are managed from one web interface.
-
-Typical operations include:
-
-- Create and remove instances
-- Start and stop instances
-- Configure resolution and refresh rate
-- Pair Moonlight clients
-- Inspect connection status
-- View diagnostics
-- Manage host-level settings
-
-No command-line workflow is required for normal day-to-day use.
+```text
+Windows 10/11 x64 Host
+        │
+      Avalon
+        │
+ ┌──────┼──────┐
+ ▼      ▼      ▼
+Instance 01  Instance 02  Instance 03
+ │      │      │
+ ▼      ▼      ▼
+Moonlight  Moonlight  Moonlight
+```
 
 ---
 
 ## Designed for Moonlight
 
-Avalon is built around the familiar Moonlight streaming experience.
-
-You can continue using Moonlight on devices such as:
-
-- Windows
-- Linux
-- macOS
-- Android
-- iOS / iPadOS
-- Android TV
-- Smart TVs and streaming devices supported by Moonlight
-
-Avalon changes how the host is organized.
-
-It does not require users to learn a completely new streaming client.
+Avalon changes the host side rather than replacing the client you already know. Moonlight can continue to be used across Windows, Linux, macOS, Android, iOS/iPadOS, Android TV and other supported devices.
 
 ---
 
-## Use cases
+## Typical use cases
 
-### Home gaming
-
-Turn one gaming PC into multiple independent gaming environments for different people in the same household.
-
-One person can play from the living room while another connects from a handheld or laptop.
-
-### Multi-account and multi-instance workloads
-
-Run different applications, accounts, or game sessions in separate Windows environments on the same machine.
-
-### Remote workstation access
-
-Use one powerful desktop as several independently accessible remote workspaces.
-
-### Testing and development
-
-Maintain multiple Windows sessions for software testing, automation, compatibility work, or isolated user environments.
-
-### Homelab and self-hosting
-
-Use a high-performance Windows machine as a centrally managed multi-user remote computing host.
-
----
-
-## How Avalon works
-
-Avalon internally coordinates several layers of the system:
-
-```text
-Web Management
-      │
-      ▼
-Avalon Control Service
-      │
-      ▼
-Windows Sessions
-Virtual Displays
-Streaming Processes
-Input / Audio Routing
-      │
-      ▼
-Moonlight Clients
-```
-
-The implementation underneath this model is intentionally hidden from normal users.
-
-You create an instance.
-
-Avalon prepares the session, display, streaming environment, and lifecycle.
-
-Then you connect.
+- Home gaming: different people use different instances at the same time
+- Multi-account and multi-instance workloads
+- Remote workstations on one high-performance PC
+- Testing, automation and compatibility environments
+- Homelab and self-hosted remote computing
 
 ---
 
 ## Isolation model
 
-Avalon provides **Windows session-level isolation**.
-
-Each instance has its own interactive Windows session, desktop, applications, display, input path, and audio path.
-
-However, Avalon instances are **not full virtual machines**.
-
-They still share:
-
-- The same Windows host installation
-- The same kernel
-- The same physical CPU
-- The same physical GPU
-- The same host hardware resources
-
-Avalon should therefore not be treated as a VM-grade security boundary.
-
-Its goal is efficient multi-user and multi-desktop streaming, not hardware-level virtualization.
+Avalon provides Windows session-level isolation, not full virtual-machine isolation. Instances have separate desktops, applications, displays, input paths and audio paths, while sharing the host Windows installation, kernel, CPU, GPU and physical hardware. Avalon should not be treated as a VM-grade security boundary.
 
 ---
 
-## Current status
+## Platform and performance
 
-Avalon is currently in **Alpha**.
-
-The architecture, management interface, compatibility layer, and device stack are still evolving.
-
-Expect:
-
-- Breaking changes
-- Incomplete hardware compatibility
-- UI changes
-- Driver and session edge cases
-- Features that may change before stable release
-
-Avalon is not yet intended to be treated as production-critical infrastructure.
-
-Testing, feedback, logs, and reproducible bug reports are extremely valuable during this stage.
+Avalon targets 64-bit Windows 10 and Windows 11. Actual resolution, refresh rate, codec support, HDR behavior and the number of simultaneous instances depend on the GPU, drivers, encoder capabilities, network conditions and client hardware.
 
 ---
 
-## Platform
+## Project status
 
-Current target:
-
-```text
-Windows 11
-```
-
-Avalon is designed specifically around the Windows desktop and session model.
-
-Support for other host operating systems is not currently a project goal.
+Avalon is currently in Alpha. Interfaces, compatibility behavior and lower-level components are still evolving, so breaking changes and hardware-specific edge cases are expected.
 
 ---
 
-## Performance
+## Development and feedback
 
-Actual streaming performance depends on many factors, including:
+This README is the stable product introduction. Real-time development notes and message guidance are maintained separately in the development log.
 
-- GPU
-- Encoder support
-- Graphics driver
-- Resolution
-- Refresh rate
-- Codec
-- Network quality
-- Client decoding capability
-- Number of simultaneous instances
-
-Avalon does not guarantee a specific resolution, refresh rate, HDR mode, or number of concurrent instances on every system.
-
-Compatibility documentation will become more detailed as testing expands.
-
----
-
-## Project philosophy
-
-Avalon is built around a simple idea:
-
-> A powerful PC should not be limited to one screen, one desktop, and one user at a time.
-
-The host may be one machine.
-
-The experiences running on it do not have to be.
-
----
-
-## Development
-
-Avalon is under active development.
-
-The latest development information, known issues, compatibility notes, and technical details are maintained in this repository.
-
-For bug reports and feature requests, use the repository issue tracker.
-
-
----
-
-<div align="center">
-
-### Avalon
+- [Development log & feedback](https://github.com/AvalonStream/AvalonStream/blob/main/devlog.md)
+- [Issues / bug reports](https://github.com/AvalonStream/AvalonStream/issues)
 
 **One host. Multiple instances.**
-
-</div>
