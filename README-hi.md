@@ -1,93 +1,314 @@
+<div align="center">
+
 # Avalon
 
-### एक Windows 10/11 x64 PC. कई स्वतंत्र डेस्कटॉप।
+### एक Windows 10/11 x64 PC। कई स्वतंत्र डेस्कटॉप।
 
-Avalon एक Windows 10/11 x64 होस्ट को कई स्वतंत्र रूप से एक्सेस किए जा सकने वाले डेस्कटॉप इंस्टेंस में बदलता है। हर इंस्टेंस की अपनी Windows session, virtual display, input, audio, applications, games और Moonlight connection हो सकती है।
+एक Windows 10/11 x64 मशीन को कई स्वतंत्र रूप से उपलब्ध डेस्कटॉप इंस्टेंस में बदलें, जहाँ हर इंस्टेंस का अपना डिस्प्ले, इनपुट, ऑडियो, एप्लिकेशन और रिमोट स्ट्रीमिंग कनेक्शन हो।
 
-**एक host. कई instances.**
+**एक होस्ट। कई इंस्टेंस।**
 
-[English](README.md)
+[English](README.md) · [简体中文](README-zh-CN.md)
 
-[Development log और feedback](https://github.com/AvalonStream/AvalonStream/blob/main/devlog.md) · [Issues / bugs और feature requests](https://github.com/AvalonStream/AvalonStream/issues)
+</div>
 
 ---
 
 ## Avalon क्या है?
 
-Avalon Windows 10/11 x64 के लिए multi-session desktop streaming platform है। पूरे PC को केवल एक interactive desktop तक सीमित रखने के बजाय, यह हर user के लिए पूरी virtual machine चलाए बिना एक ही host पर कई independent Windows instances चलाने देता है।
+Avalon Windows 10/11 x64 के लिए एक मल्टी-सेशन डेस्कटॉप स्ट्रीमिंग प्लेटफ़ॉर्म है।
+
+एक PC को केवल एक इंटरैक्टिव डेस्कटॉप तक सीमित रखने के बजाय, Avalon उसी मशीन पर एक साथ कई स्वतंत्र Windows इंस्टेंस चलाने की सुविधा देता है।
+
+हर इंस्टेंस के पास अपना अलग हो सकता है:
+
+- Windows डेस्कटॉप सेशन
+- वर्चुअल डिस्प्ले
+- रेज़ोल्यूशन और रिफ्रेश रेट
+- इनपुट स्ट्रीम
+- ऑडियो स्ट्रीम
+- एप्लिकेशन और गेम
+- Moonlight के माध्यम से रिमोट कनेक्शन
+
+इससे एक शक्तिशाली PC कई रिमोट कंप्यूटरों की तरह काम कर सकता है, बिना हर उपयोगकर्ता के लिए पूरा वर्चुअल मशीन चलाए।
+
+---
+
+## व्यवहार में यह कैसा दिखता है?
+
+मान लें कि एक Windows 10/11 x64 PC पर तीन Avalon इंस्टेंस चल रहे हैं:
+
+```text
+                Windows 10/11 x64 Host
+                       │
+                ┌──────┴──────┐
+                │    Avalon    │
+                └──────┬──────┘
+                       │
+         ┌─────────────┼─────────────┐
+         │             │             │
+         ▼             ▼             ▼
+    Instance 01    Instance 02    Instance 03
+         │             │             │
+         ▼             ▼             ▼
+     Moonlight      Moonlight      Moonlight
+        TV            Tablet         Laptop
+```
+
+हर क्लाइंट अपने अलग Windows डेस्कटॉप से जुड़ता है।
+
+इंस्टेंस एक साथ चलते हैं और एक ही डेस्कटॉप, माउस कर्सर, ऑडियो आउटपुट या एप्लिकेशन सेशन साझा नहीं करते।
+
+---
+
+## Avalon क्यों?
+
+पारंपरिक रिमोट डेस्कटॉप टूल आम तौर पर एक उपयोगकर्ता द्वारा एक डेस्कटॉप नियंत्रित करने के मॉडल पर आधारित होते हैं।
+
+वर्चुअल मशीन मजबूत आइसोलेशन देती हैं, लेकिन वे अतिरिक्त ऑपरेटिंग सिस्टम, अधिक मेमोरी, स्टोरेज उपयोग, GPU जटिलता और प्रशासनिक लागत भी जोड़ती हैं।
+
+Avalon अलग दृष्टिकोण अपनाता है।
+
+यह Windows सेशन, वर्चुअल डिस्प्ले, स्वतंत्र स्ट्रीमिंग प्रोसेस और केंद्रीकृत लाइफ़साइकिल प्रबंधन को जोड़ता है, ताकि एक Windows 10/11 x64 होस्ट पर कई इंटरैक्टिव डेस्कटॉप एक साथ मौजूद रह सकें।
+
+जटिलता Avalon के अंदर रहती है। उपयोगकर्ता के लिए प्रक्रिया सरल है:
+
+```text
+इंस्टेंस बनाएँ
+        ↓
+डिस्प्ले और पेयरिंग सेट करें
+        ↓
+Moonlight खोलें
+        ↓
+कनेक्ट करें
+```
 
 ---
 
 ## मुख्य क्षमताएँ
 
-- एक host पर कई स्वतंत्र Windows instances
-- हर instance के लिए अलग streaming context
-- हर instance का virtual display, resolution और refresh rate
-- अलग keyboard, mouse और session audio paths
-- Avalon external RDP client को लगातार connected रखे बिना session lifecycle संभालता है
-- Web से creation, pairing, status और diagnostics
-- फोन, tablet, TV और PC पर परिचित Moonlight client ही इस्तेमाल होता है
+### कई स्वतंत्र इंस्टेंस
+
+एक ही होस्ट पर एक साथ कई Windows डेस्कटॉप सेशन चलाएँ।
+
+हर इंस्टेंस अपने अलग इंटरैक्टिव डेस्कटॉप वातावरण की तरह काम करता है।
+
+### स्वतंत्र स्ट्रीमिंग
+
+हर इंस्टेंस का अपना स्ट्रीमिंग कॉन्टेक्स्ट होता है और Moonlight क्लाइंट से अलग-अलग कनेक्ट किया जा सकता है।
+
+एक TV एक इंस्टेंस से जुड़ा हो सकता है, जबकि टैबलेट या दूसरा कंप्यूटर उसी समय किसी दूसरे इंस्टेंस से जुड़ सकता है।
+
+### स्वतंत्र डिस्प्ले
+
+हर इंस्टेंस अपनी वर्चुअल डिस्प्ले कॉन्फ़िगरेशन का उपयोग कर सकता है, जिसमें रेज़ोल्यूशन और रिफ्रेश रेट शामिल हैं।
+
+Avalon डिस्प्ले वातावरण को प्रबंधित करता है, इसलिए हर इंस्टेंस के लिए अलग भौतिक मॉनिटर आवश्यक नहीं है।
+
+### स्वतंत्र इनपुट
+
+कीबोर्ड और माउस इनपुट सभी इंस्टेंस में साझा होने के बजाय लक्षित Windows सेशन तक भेजे जाते हैं।
+
+इनपुट स्टैक के विकसित होने के साथ Avalon को प्रति-इंस्टेंस डिवाइस आइसोलेशन को और पूर्ण बनाने की दिशा में डिज़ाइन किया गया है।
+
+### स्वतंत्र ऑडियो
+
+हर इंस्टेंस अपना Windows सेशन ऑडियो पथ उपयोग करता है, इसलिए अलग उपयोगकर्ता अलग एप्लिकेशन या गेम सुन सकते हैं और ऑडियो इंस्टेंसों के बीच साधारण रूप से मिक्स नहीं होता।
+
+### सेशन लाइफ़साइकिल प्रबंधन
+
+Avalon सेशन को स्वयं बनाता और बनाए रखता है।
+
+केवल इंस्टेंस को चालू रखने के लिए किसी बाहरी RDP क्लाइंट को लगातार कनेक्ट रखना आवश्यक नहीं है।
+
+### Web प्रबंधन
+
+सभी इंस्टेंस एक ही Web इंटरफ़ेस से प्रबंधित होते हैं।
+
+सामान्य कार्यों में शामिल हैं:
+
+- इंस्टेंस बनाना और हटाना
+- इंस्टेंस शुरू और बंद करना
+- रेज़ोल्यूशन और रिफ्रेश रेट सेट करना
+- Moonlight क्लाइंट पेयर करना
+- कनेक्शन स्थिति देखना
+- डायग्नोस्टिक जानकारी देखना
+- होस्ट-स्तरीय सेटिंग प्रबंधित करना
+
+रोज़मर्रा के उपयोग के लिए कमांड लाइन की आवश्यकता नहीं है।
 
 ---
 
-## यह कैसे काम करता है?
+## Moonlight के लिए डिज़ाइन किया गया
 
-एक instance बनाइए, display settings चुनिए और client pair कीजिए। Avalon Windows session, virtual display, streaming context और lifecycle तैयार करता है; इसके बाद Moonlight से connect करें।
+Avalon परिचित Moonlight स्ट्रीमिंग अनुभव को बनाए रखता है।
+
+आप Moonlight का उपयोग इन उपकरणों पर जारी रख सकते हैं:
+
+- Windows
+- Linux
+- macOS
+- Android
+- iOS / iPadOS
+- Android TV
+- Moonlight द्वारा समर्थित Smart TV और स्ट्रीमिंग डिवाइस
+
+Avalon होस्ट-साइड संगठन बदलता है; यह उपयोगकर्ता को बिल्कुल नया स्ट्रीमिंग क्लाइंट सीखने के लिए मजबूर नहीं करता।
+
+---
+
+## उपयोग के उदाहरण
+
+### घर में गेमिंग
+
+एक गेमिंग PC को एक ही घर में कई लोगों के लिए कई स्वतंत्र गेमिंग वातावरण में बदलें।
+
+एक व्यक्ति लिविंग रूम TV पर खेल सकता है, जबकि दूसरा हैंडहेल्ड या लैपटॉप से दूसरे इंस्टेंस से जुड़ सकता है।
+
+### कई अकाउंट और कई इंस्टेंस
+
+एक ही मशीन पर अलग Windows वातावरण में अलग एप्लिकेशन, अकाउंट या गेम सेशन चलाएँ।
+
+### रिमोट वर्कस्टेशन
+
+एक शक्तिशाली डेस्कटॉप को कई स्वतंत्र रूप से उपलब्ध रिमोट कार्यस्थलों की तरह उपयोग करें।
+
+### टेस्टिंग और डेवलपमेंट
+
+सॉफ़्टवेयर टेस्टिंग, ऑटोमेशन, कम्पैटिबिलिटी जाँच या अलग उपयोगकर्ता वातावरण के लिए कई Windows सेशन बनाए रखें।
+
+### Homelab और self-hosting
+
+एक उच्च-प्रदर्शन Windows मशीन को केंद्रीकृत रूप से प्रबंधित मल्टी-यूज़र रिमोट कंप्यूटिंग होस्ट के रूप में उपयोग करें।
+
+---
+
+## Avalon कैसे काम करता है?
+
+Avalon अंदर से सिस्टम की कई परतों का समन्वय करता है:
 
 ```text
-Windows 10/11 x64 Host
-        │
-      Avalon
-        │
- ┌──────┼──────┐
- ▼      ▼      ▼
-Instance 01  Instance 02  Instance 03
- │      │      │
- ▼      ▼      ▼
-Moonlight  Moonlight  Moonlight
+Web Management
+      │
+      ▼
+Avalon Control Service
+      │
+      ▼
+Windows Sessions
+Virtual Displays
+Streaming Processes
+Input / Audio Routing
+      │
+      ▼
+Moonlight Clients
 ```
 
----
+सामान्य उपयोगकर्ता को इन आंतरिक तकनीकी विवरणों को समझने की आवश्यकता नहीं है।
 
-## Moonlight के लिए बनाया गया
-
-Avalon उस client को बदलने के बजाय host side को व्यवस्थित करता है जिसे आप पहले से जानते हैं। Moonlight Windows, Linux, macOS, Android, iOS/iPadOS, Android TV और अन्य supported devices पर चलता रहता है।
+आप एक इंस्टेंस बनाते हैं; Avalon सेशन, डिस्प्ले, स्ट्रीमिंग वातावरण और लाइफ़साइकिल तैयार करता है; फिर आप कनेक्ट करते हैं।
 
 ---
 
-## सामान्य उपयोग
+## आइसोलेशन मॉडल
 
-- घर में gaming: अलग-अलग लोग एक साथ अलग instances इस्तेमाल करें
-- कई accounts और multi-instance workloads
-- एक शक्तिशाली PC पर कई remote workstations
-- testing, automation और compatibility environments
-- Homelab और self-hosted remote computing
+Avalon **Windows सेशन-स्तरीय आइसोलेशन** प्रदान करता है।
 
----
+हर इंस्टेंस का अपना Windows सेशन, डेस्कटॉप, एप्लिकेशन, डिस्प्ले, इनपुट पथ और ऑडियो पथ होता है।
 
-## Isolation model
+लेकिन Avalon इंस्टेंस **पूर्ण वर्चुअल मशीन नहीं हैं**।
 
-Avalon full virtual-machine isolation नहीं, बल्कि Windows session-level isolation देता है। Desktop, apps, displays, input और audio अलग रहते हैं, लेकिन host Windows, kernel, CPU, GPU और physical hardware साझा होते हैं। इसे VM-grade security boundary नहीं मानना चाहिए।
+वे अभी भी साझा करते हैं:
 
----
+- वही Windows होस्ट इंस्टॉलेशन
+- वही kernel
+- वही भौतिक CPU
+- वही भौतिक GPU
+- उसी होस्ट के हार्डवेयर संसाधन
 
-## Platform और performance
+इसलिए Avalon को VM-स्तरीय सुरक्षा सीमा नहीं माना जाना चाहिए।
 
-Avalon 64-bit Windows 10 और Windows 11 को target करता है। Resolution, refresh rate, codecs, HDR और simultaneous instances की संख्या GPU, drivers, encoder, network और client hardware पर निर्भर करती है।
-
----
-
-## Project status
-
-Avalon अभी Alpha stage में है। UI, compatibility और low-level components लगातार बदल रहे हैं, इसलिए breaking changes और hardware-specific edge cases संभव हैं।
+इसका उद्देश्य कुशल मल्टी-यूज़र और मल्टी-डेस्कटॉप स्ट्रीमिंग है, पूर्ण हार्डवेयर वर्चुअलाइज़ेशन नहीं।
 
 ---
 
-## Development और feedback
+## वर्तमान स्थिति
 
-यह README स्थिर product introduction है। Real-time development updates और message guidance अलग development log में रखे जाते हैं।
+Avalon अभी **Alpha** चरण में है।
 
-- [Development log और feedback](https://github.com/AvalonStream/AvalonStream/blob/main/devlog.md)
-- [Issues / bugs और feature requests](https://github.com/AvalonStream/AvalonStream/issues)
+आर्किटेक्चर, प्रबंधन इंटरफ़ेस, कम्पैटिबिलिटी लेयर और डिवाइस स्टैक लगातार विकसित हो रहे हैं।
 
-**एक host. कई instances.**
+इस चरण में निम्न हो सकते हैं:
+
+- असंगत बदलाव
+- अधूरी हार्डवेयर कम्पैटिबिलिटी
+- UI परिवर्तन
+- ड्राइवर और सेशन से जुड़े edge cases
+- ऐसी सुविधाएँ जिनका व्यवहार स्थिर रिलीज़ से पहले बदल सकता है
+
+Avalon को अभी महत्वपूर्ण production infrastructure के रूप में उपयोग करने के लिए नहीं बनाया गया है।
+
+टेस्टिंग, logs, दोहराए जा सकने वाले bug reports और वास्तविक उपयोग से feedback इस चरण में बहुत महत्वपूर्ण हैं।
+
+---
+
+## प्लेटफ़ॉर्म
+
+वर्तमान लक्ष्य:
+
+```text
+Windows 10 x64 / Windows 11 x64
+```
+
+Avalon विशेष रूप से Windows के desktop, session और graphics मॉडल के आसपास डिज़ाइन किया गया है।
+
+अन्य host operating systems का समर्थन अभी परियोजना का मुख्य लक्ष्य नहीं है।
+
+---
+
+## प्रदर्शन
+
+वास्तविक streaming performance कई कारकों पर निर्भर करता है, जिनमें शामिल हैं:
+
+- GPU
+- encoder support
+- graphics driver
+- resolution
+- refresh rate
+- codec
+- network quality
+- client decoding capability
+- एक साथ चलने वाले instances की संख्या
+
+Avalon हर सिस्टम पर किसी निश्चित resolution, refresh rate, HDR mode या simultaneous instances की निश्चित संख्या की गारंटी नहीं देता।
+
+जैसे-जैसे testing coverage बढ़ेगी, compatibility documentation और विस्तृत होगी।
+
+---
+
+## परियोजना का विचार
+
+Avalon एक सरल विचार पर आधारित है:
+
+> एक शक्तिशाली PC को हमेशा केवल एक स्क्रीन, एक desktop और एक उपयोगकर्ता तक सीमित नहीं होना चाहिए।
+
+Host एक मशीन हो सकता है, लेकिन उस पर चलने वाले अनुभव केवल एक होने की आवश्यकता नहीं है।
+
+---
+
+## डेवलपमेंट
+
+यह README Avalon के स्थिर उत्पाद परिचय के रूप में बनाए रखा जाता है।
+
+रीयल-टाइम डेवलपमेंट अपडेट और परियोजना संदेशों के लिए [devlog.md](https://github.com/AvalonStream/AvalonStream/blob/main/devlog.md) देखें।
+
+बग रिपोर्ट, प्रश्न और फीचर अनुरोधों के लिए [GitHub Issues](https://github.com/AvalonStream/AvalonStream/issues) का उपयोग करें।
+
+---
+
+<div align="center">
+
+### Avalon
+
+**एक होस्ट। कई इंस्टेंस।**
+
+</div>
