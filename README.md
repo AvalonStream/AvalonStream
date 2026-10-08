@@ -241,21 +241,19 @@ Its goal is efficient multi-user and multi-desktop streaming, not hardware-level
 
 ## Current status
 
-Avalon is currently in **Alpha**.
+**Avalon 1.0.0 is now available.**
 
-The architecture, management interface, compatibility layer, and device stack are still evolving.
+[Download Avalon for Windows x64](https://github.com/AvalonStream/AvalonStream/releases/download/v1.0.0/Avalon-Setup-1.0.0.exe) · [Release notes and previous versions](https://github.com/AvalonStream/AvalonStream/releases)
 
-Expect:
+- Supported hosts: Windows 10 x64 version 1903 (build 18362) or later, and Windows 11 x64. Windows Home editions, 32-bit Windows, and Windows on ARM are not supported.
+- The installer includes the host application, web management, session provider, and virtual display components. Administrator permission is required for installation and removal.
+- Create an instance, start it from the management panel, and pair your Moonlight client. Creating an instance does not automatically start it.
+- Without activation, Avalon supports one created instance, one running instance, and up to 60 FPS. A paid license removes these free-tier restrictions; the system-wide limit remains 330 instances, and practical concurrency depends on your hardware.
+- Purchase from **More → Buy license** in the Avalon panel. Keep the delivered **license.dat** file: it can restore a perpetual license on the same licensed device after reinstalling Windows, including while offline. Changes to the motherboard or system drive can affect device-bound activation.
 
-- Breaking changes
-- Incomplete hardware compatibility
-- UI changes
-- Driver and session edge cases
-- Features that may change before stable release
+The 1.0.0 package currently includes test-signed virtual display drivers, not WHQL-certified drivers. Windows security policies can affect installation and loading.
 
-Avalon is not yet intended to be treated as production-critical infrastructure.
-
-Testing, feedback, logs, and reproducible bug reports are extremely valuable during this stage.
+Hardware, encoder, game, anti-cheat, and network compatibility still vary. Intermittent audio issues on some cross-network IPv6 connections remain under investigation. Please report reproducible issues with the Windows version, GPU, client, and relevant logs; do not include passwords, license files, or purchase links containing private tokens.
 
 ---
 
@@ -307,13 +305,13 @@ The experiences running on it do not have to be.
 
 ## Development
 
-Avalon is under active development.
+Avalon continues development from the **1.0.0 release**. The next phase focuses on compatibility coverage, reliable installation and removal, session lifecycle robustness, and streaming quality before expanding the feature set.
 
-This README is the stable product introduction for Avalon.
+This README remains the product introduction; release-specific changes and downloads are published on [GitHub Releases](https://github.com/AvalonStream/AvalonStream/releases).
 
-For real-time development updates and project messages, see [devlog.md](https://github.com/AvalonStream/AvalonStream/blob/main/devlog.md).
+For development updates and project messages, see [devlog.md](https://github.com/AvalonStream/AvalonStream/blob/main/devlog.md).
 
-For bug reports, questions, and feature requests, use [GitHub Issues](https://github.com/AvalonStream/AvalonStream/issues).
+Report reproducible bugs through [GitHub Issues](https://github.com/AvalonStream/AvalonStream/issues). Use [GitHub Discussions](https://github.com/AvalonStream/AvalonStream/discussions) for questions, ideas, and community feedback.
 
 ---
 
