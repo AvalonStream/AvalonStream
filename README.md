@@ -1,3 +1,5 @@
+<!-- avalon-readme-revision: 2026-10-08.1 -->
+
 <div align="center">
 
 # Avalon
@@ -7,8 +9,6 @@
 Turn a single Windows 10/11 x64 machine into multiple independently accessible desktop instances, each with its own display, input, audio, applications, and remote streaming connection.
 
 **One host. Multiple instances.**
-
-[简体中文](README-zh-CN.md)
 
 </div>
 
@@ -305,11 +305,7 @@ The experiences running on it do not have to be.
 
 ## Development
 
-Avalon continues development from the **1.0.0 release**. The next phase focuses on compatibility coverage, reliable installation and removal, session lifecycle robustness, and streaming quality before expanding the feature set.
-
-This README remains the product introduction; release-specific changes and downloads are published on [GitHub Releases](https://github.com/AvalonStream/AvalonStream/releases).
-
-For development updates and project messages, see [devlog.md](https://github.com/AvalonStream/AvalonStream/blob/main/devlog.md).
+Future versions of Avalon are still in development. Stay tuned for a more reliable product, better performance, and support for more features!
 
 Report reproducible bugs through [GitHub Issues](https://github.com/AvalonStream/AvalonStream/issues). Use [GitHub Discussions](https://github.com/AvalonStream/AvalonStream/discussions) for questions, ideas, and community feedback.
 
