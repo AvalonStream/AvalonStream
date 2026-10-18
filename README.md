@@ -1,4 +1,4 @@
-<!-- avalon-readme-revision: 2026-10-17.1 -->
+<!-- avalon-readme-revision: 2026-10-18.1 -->
 
 <div align="center">
 
@@ -241,9 +241,9 @@ Its goal is efficient multi-user and multi-desktop streaming, not hardware-level
 
 ## Current status
 
-**Avalon 1.0.1 is now available.**
+**Avalon 1.0.2 is now available.**
 
-[Download Avalon for Windows x64](https://github.com/AvalonStream/AvalonStream/releases/download/v1.0.1/Avalon-Setup-1.0.1.exe) · [Release notes and previous versions](https://github.com/AvalonStream/AvalonStream/releases)
+[Download Avalon for Windows x64](https://github.com/AvalonStream/AvalonStream/releases/download/v1.0.2/Avalon-Setup-1.0.2.exe) · [Release notes and previous versions](https://github.com/AvalonStream/AvalonStream/releases)
 
 - Supported hosts: Windows 10 x64 version 1903 (build 18362) or later, and Windows 11 x64. Windows Home editions, 32-bit Windows, and Windows on ARM are not supported.
 - The installer includes the host application, web management, session provider, and virtual display components. Administrator permission is required for installation and removal.
@@ -251,7 +251,7 @@ Its goal is efficient multi-user and multi-desktop streaming, not hardware-level
 - Without activation, Avalon supports one created instance, one running instance, and up to 60 FPS. A paid license removes these free-tier restrictions; the system-wide limit remains 330 instances, and practical concurrency depends on your hardware.
 - Purchase from **More → Buy license** in the Avalon panel. Keep the delivered **license.dat** file: it can restore a perpetual license on the same licensed device after reinstalling Windows, including while offline. Changes to the motherboard or system drive can affect device-bound activation.
 
-The 1.0.1 package currently includes test-signed virtual display drivers, not WHQL-certified drivers. Windows security policies can affect installation and loading.
+The 1.0.2 package currently includes test-signed virtual display drivers, not WHQL-certified drivers. Windows security policies can affect installation and loading.
 
 Hardware, encoder, game, anti-cheat, and network compatibility still vary. Intermittent audio issues on some cross-network IPv6 connections remain under investigation. Please report reproducible issues with the Windows version, GPU, client, and relevant logs; do not include passwords, license files, or purchase links containing private tokens.
 
