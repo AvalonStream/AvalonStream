@@ -1,609 +1,373 @@
-# Avalon — Installation & Activation Guide
+# Avalon — Installation and Activation Guide
 
-Welcome to **Avalon**!
+This guide explains how to install, configure, activate, troubleshoot, and uninstall Avalon on Windows.
 
-This guide will walk you through everything you need to know about installing, configuring, activating, troubleshooting, and uninstalling Avalon on Windows.
+**Before installing, read the system requirements and known issues in Sections 1–2.** Security software may interfere with Avalon, while ASTER and RDPWrap / `termsrv.dll`-related tools or patches have separate conflicts that must be resolved before use.
 
-Before proceeding, we strongly recommend reading the system requirements and security software compatibility notes below. A few minutes of preparation can save you a considerable amount of troubleshooting later.
+## Contents
+
+1. [System Requirements](#1-system-requirements)
+2. [Known Issues and Software Conflicts](#2-known-issues-and-software-conflicts)
+3. [Antivirus and Windows Security](#3-antivirus-and-windows-security)
+4. [Installing Avalon](#4-installing-avalon)
+5. [First-Time Setup](#5-first-time-setup)
+6. [Troubleshooting](#6-troubleshooting)
+7. [License Activation](#7-license-activation)
+8. [Uninstalling Avalon](#8-uninstalling-avalon)
+9. [Additional Recommendations](#9-additional-recommendations)
+10. [Support and Community](#10-support-and-community)
 
 ---
 
 ## 1. System Requirements
 
-Avalon is designed for **64-bit Windows 10 and Windows 11** systems.
-
-Please verify that your operating system meets the following requirements before installation.
+Avalon is designed for **64-bit Windows 10 and Windows 11**. Confirm the following requirements before installation.
 
 | Requirement | Details |
 |---|---|
-| Operating System | Windows 10 / Windows 11 |
+| Operating system | Windows 10 / Windows 11 |
 | Architecture | x64 (64-bit) only |
-| Minimum Windows 10 Version | Version 1903 (Build 18362) |
-| Windows Editions | Pro or compatible higher editions |
-| Windows Home | **Not Supported** |
+| Minimum Windows 10 version | Version 1903 (Build 18362) |
+| Windows editions | Pro or compatible higher editions |
+| Windows Home | **Not supported** |
 | Windows 10/11 LTSC | Not fully tested |
 | Windows IoT LTSC | Not fully tested |
-| Windows on ARM | Not Supported |
-| Administrator Privileges | Required for installation and removal |
+| Windows on ARM | **Not supported** |
+| Administrator privileges | Required for installation and removal |
 
 ### 1.1 Check Your Windows Version
 
-To check your Windows version:
-
-1. Press `Win + R` on your keyboard.
+1. Press `Win + R`.
 2. Type `winver` and press **Enter**.
-3. A window will appear showing your Windows version and OS build number.
-4. Make sure your system meets the minimum requirements listed above.
+3. Check the Windows version and OS build against the requirements above.
 
-You can also check your Windows edition and system architecture under:
+You can also check your Windows edition and system architecture under **Settings → System → About**.
 
-**Settings → System → About**
+> **Important:** Windows 10 versions earlier than **1903** are not supported and may cause installation failures or unexpected behavior.
 
-> **Important:** Windows 10 must be version **1903 or newer**. Earlier versions are not supported and may result in installation failures or unexpected behavior.
+### 1.2 Windows Home Is Not Supported
 
-### 1.2 Windows Home Edition Is Not Supported
+If you use Windows 10 Home or Windows 11 Home, upgrade to Windows Pro or another compatible edition before installing Avalon. Installing on an unsupported edition may cause installation failures or session initialization problems.
 
-Unfortunately, Avalon does not currently support Windows Home editions.
+See [Microsoft Support — Upgrade Windows Home to Windows Pro](https://support.microsoft.com/en-us/windows/deployment/install-upgrade/upgrade-windows-home-to-windows-pro). Complete and activate the Windows upgrade before installing Avalon.
 
-If you are using Windows 10 Home or Windows 11 Home, you must upgrade to Windows Pro or another compatible edition before installing Avalon.
+### 1.3 LTSC and IoT LTSC Editions
 
-Attempting to install Avalon on an unsupported edition may result in installation failures, session initialization problems, or other unpredictable behavior.
-
-For official instructions on upgrading Windows Home to Pro, please refer to Microsoft's documentation:
-
-**[Microsoft Support — Upgrade Windows Home to Windows Pro](https://support.microsoft.com/en-us/windows/deployment/install-upgrade/upgrade-windows-home-to-windows-pro)**
-
-Please ensure that your Windows upgrade is successfully completed and activated before attempting to install Avalon.
-
-### 1.3 About LTSC and IoT LTSC Editions
-
-Some users may prefer Windows LTSC or Windows IoT LTSC editions for their reduced background activity and long-term servicing characteristics.
-
-However, these editions have **not been comprehensively tested** with Avalon.
-
-Although Avalon may work on some LTSC configurations, we cannot guarantee full compatibility, stability, or functionality.
-
-If you decide to use Avalon on an LTSC-based system, please be aware that you are doing so at your own discretion.
+Windows LTSC and Windows IoT LTSC editions have **not been comprehensively tested** with Avalon. Some configurations may work, but full compatibility, stability, and functionality are not guaranteed.
 
 ---
 
-## 2. Important: Antivirus & Windows Security Compatibility
+## 2. Known Issues and Software Conflicts
 
-**Please read this section carefully before installing or uninstalling Avalon.**
+Review this list before installing Avalon and when troubleshooting unexpected behavior.
 
-Avalon interacts with several Windows system components to provide independent desktop sessions, virtual displays, and streaming functionality.
+| No. | Software or Feature | Compatibility Note |
+|---|---|---|
+| 1 | **360 Security Guard (360 安全卫士)** | May cause compatibility issues with Avalon. |
+| 2 | **Huorong Security (火绒杀毒)** | May cause compatibility issues with Avalon. |
+| 3 | **QQ PC Manager (QQ 电脑管家)** | May cause compatibility issues with Avalon. |
+| 4 | **Windows Security → Real-time protection** (Microsoft Defender Antivirus) | May interfere with Avalon components. |
+| 5 | **Other antivirus or security software** | May also interfere with Avalon. |
+| 6 | **ASTER multiseat software** | **Conflicts with Avalon. Do not use Avalon and ASTER at the same time.** |
+| 7 | **RDP Wrapper (RDPWrap) and similar tools or patches involving `termsrv.dll`** | **Conflict with Avalon. Resolve the conflicting configuration before using Avalon.** |
 
-Due to the nature of these operations, Microsoft Defender Antivirus, Windows Security policies, or third-party antivirus software may occasionally interfere with certain Avalon components.
+**Entries 1–5 describe potential interference.** Their presence alone does not establish the cause of a failure. Check protection history, quarantine records, and relevant error messages before changing security settings.
 
-In some cases, security software may silently block, quarantine, or restrict a component without displaying an obvious warning.
+**Entries 6–7 describe software conflicts.** Check these separately from antivirus interference, especially when instances cannot be created, started, or restarted.
 
-This can lead to unexpected problems, including but not limited to:
+### 2.1 Potential Interference from Security Software
 
-- Installation or uninstallation failures.
+Security software may block, quarantine, or restrict Avalon components without an obvious warning. Possible symptoms include:
+
+- Installation, update, or uninstallation failures.
 - Avalon services failing to initialize.
-- Virtual display or driver-related problems.
-- Instances failing to be created or started.
-- Instances failing to restart correctly.
-- Previously working features suddenly becoming unavailable.
-- Unexpected behavior during normal operation.
+- Virtual display or driver problems.
+- Instances failing to be created, started, or restarted.
+- Previously working features becoming unavailable or behaving unexpectedly.
 
-These problems may occur during installation, after updating, or even after Avalon has been working normally for some time.
+These issues may occur during setup, after an update, or after Avalon has been working normally for some time. Use the checks in **Section 3** to investigate security software interference.
 
-**Security software interference is one of the first things worth investigating when Avalon behaves unexpectedly.** However, it is not the only possible cause.
+### 2.2 Conflict with ASTER
 
-### 2.1 Microsoft Defender Real-Time Protection
+**Avalon and ASTER cannot be used at the same time.** Resolve this conflict before installing or starting Avalon. If you need to disable or remove ASTER, use its documented procedures and restart Windows if prompted.
 
-For a smoother installation or uninstallation experience, you may need to temporarily disable Microsoft Defender real-time protection if it is interfering with Avalon.
+### 2.3 Conflicts with RDPWrap and `termsrv.dll`-Related Tools or Patches
 
-We recommend checking protection history and using narrowly scoped exclusions for trusted Avalon components whenever possible.
+**RDPWrap and similar tools or patches involving `termsrv.dll` conflict with Avalon.** Check for these tools or modifications before installation, including those applied before Avalon was installed.
 
-If temporarily disabling real-time protection is necessary, follow these steps:
-
-1. Open the Windows **Start** menu.
-2. Search for and open **Windows Security**.
-3. Select **Virus & threat protection**.
-4. Under **Virus & threat protection settings**, click **Manage settings**.
-5. Locate **Real-time protection**.
-6. Switch the setting to **Off**.
-7. Confirm the Windows permission prompt if one appears.
-
-You can now retry the affected installation or uninstallation operation.
-
-For Microsoft's official instructions, see:
-
-**[Microsoft Support — Virus and Threat Protection in Windows Security](https://support.microsoft.com/en-us/windows/security/threat-malware-protection/virus-and-threat-protection-in-the-windows-security-app)**
-
-> **Security Notice**
->
-> Disabling real-time protection reduces your system's protection against malicious software.
->
-> Only consider this step when using an installer obtained from an official Avalon source and when troubleshooting a confirmed or suspected compatibility issue.
->
-> Re-enable real-time protection as soon as installation or troubleshooting is complete.
->
-> Microsoft Defender may also automatically re-enable protection after a period of time.
-
-### 2.2 Third-Party Antivirus Software
-
-If you are using a third-party antivirus or endpoint security product, similar compatibility issues may occur.
-
-Depending on your security software, you may consider:
-
-- Adding verified Avalon executables or components to the antivirus exclusion or allowlist.
-- Checking quarantine and security event history for blocked Avalon components.
-- Temporarily pausing antivirus protection during installation or uninstallation, if necessary.
-- Temporarily exiting the antivirus application when its protection can be safely paused.
-- If persistent incompatibility is confirmed, considering a different security product or uninstalling the conflicting one while maintaining appropriate system protection.
-
-**We do not recommend permanently leaving your computer without active antivirus protection.**
-
-If problems persist even after antivirus interference has been ruled out, other Windows security policies, driver restrictions, or compatibility issues may be responsible.
-
-### 2.3 A Note About Virtual Display Drivers
-
-Some Avalon releases, including version 1.0.0, use test-signed virtual display drivers rather than WHQL-certified drivers.
-
-Depending on your Windows security configuration, driver installation or loading may be restricted.
-
-Disabling antivirus protection alone will not necessarily resolve driver-signing or Windows security policy restrictions.
-
-If Windows reports a driver-related error, please record the exact message and consult the troubleshooting section before making additional system security changes.
+Use the relevant tool's documented removal or restoration procedure to resolve the conflicting configuration, then restart Windows before retrying Avalon. Reinstalling Avalon alone should not be treated as a way to remove these conflicts.
 
 ---
 
-## 3. Installing Avalon
+## 3. Antivirus and Windows Security
 
-Once you have confirmed that your system meets the requirements, you are ready to install Avalon.
+Avalon interacts with Windows components to provide independent desktop sessions, virtual displays, and streaming. Microsoft Defender Antivirus, third-party security software, or Windows security policies may restrict these operations.
 
-### Step 1 — Download the Installer
+**Start by checking protection history and quarantine records.** When appropriate, use narrowly scoped exclusions or allowlist entries for verified Avalon components obtained from an official source. Temporarily pausing protection is a troubleshooting option when interference is suspected or confirmed; it is not a routine installation requirement.
 
-Download the latest Avalon installer from an official source:
+### 3.1 Microsoft Defender Real-Time Protection
 
-- **Official Website:** https://avalons.cc
-- **GitHub Releases:** https://github.com/AvalonStream/AvalonStream/releases
+If real-time protection is interfering with an installation or uninstallation operation and a temporary pause is necessary:
 
-The installer filename follows this format:
+1. Open **Start**, search for **Windows Security**, and open it.
+2. Select **Virus & threat protection**.
+3. Under **Virus & threat protection settings**, select **Manage settings**.
+4. Set **Real-time protection** to **Off** and confirm any permission prompt.
+5. Retry the affected operation.
+6. **Turn real-time protection back on as soon as the operation or troubleshooting is complete.**
 
-`Avalon-Setup-x.x.x.exe`
+Settings path: **Windows Security → Virus & threat protection → Manage settings → Real-time protection**.
 
-Here, `x.x.x` represents the version number.
+See [Microsoft Support — Virus and Threat Protection in Windows Security](https://support.microsoft.com/en-us/windows/security/threat-malware-protection/virus-and-threat-protection-in-the-windows-security-app).
 
-We strongly recommend obtaining the installer only from official distribution channels.
+> **Security notice:** Disabling real-time protection reduces protection against malicious software. Only consider this step for troubleshooting with a verified installer from an official Avalon source. Microsoft Defender may also automatically re-enable protection after a period of time.
 
-### Step 2 — Launch the Installer
+### 3.2 Third-Party Security Software
 
-Double-click the downloaded installer:
+For 360 Security Guard, Huorong Security, QQ PC Manager, or another security product:
 
-`Avalon-Setup-x.x.x.exe`
+1. Check its protection history, quarantine, and security events for blocked Avalon components.
+2. Verify the affected files came from an official Avalon source before allowing or restoring them.
+3. Use an exclusion or allowlist entry limited to the verified component where appropriate.
+4. If necessary, temporarily pause the relevant protection using the product's supported controls and retry the affected operation.
+5. Restore any protection you paused when troubleshooting is complete.
 
-If Windows requests administrator privileges, approve the prompt to continue.
+If a persistent incompatibility is confirmed, consider changing the conflicting security product while maintaining appropriate system protection. **Do not permanently leave the computer without active antivirus protection.**
 
-Administrator permissions are necessary because Avalon installs and configures components that interact with Windows at the system level.
+If the issue continues, investigate the software conflicts in Section 2, Windows compatibility, driver restrictions, and the other checks in Section 6.
 
-### Step 3 — Choose Your Language
+### 3.3 Virtual Display Drivers
 
-Select your preferred language from the installation wizard.
+Some Avalon releases, including **version 1.0.0**, use test-signed virtual display drivers rather than WHQL-certified drivers. Depending on the Windows security configuration, driver installation or loading may be restricted.
 
-Don't worry if you accidentally select the wrong language!
-
-**You can change the interface language later from the Avalon Web Management Panel.**
-
-There is no need to reinstall Avalon just to change its display language.
-
-### Step 4 — Review the License Agreement
-
-Carefully read the license agreement and any additional notices displayed by the installer.
-
-If you understand and agree to the terms, accept the agreement and continue.
-
-If you do not agree, cancel the installation.
-
-### Step 5 — Choose an Installation Directory
-
-Select the directory where Avalon should be installed.
-
-You may use the default installation path or choose a custom location according to your preferences.
-
-For most users, the default installation directory is recommended.
-
-### Step 6 — Desktop Shortcut
-
-Choose whether you would like the installer to create a desktop shortcut.
-
-This is entirely optional and does not affect Avalon's core functionality.
-
-### Step 7 — Complete the Installation
-
-Click **Install** and allow the installer to complete the required operations.
-
-During installation, Avalon may configure services, session-related components, and virtual display functionality.
-
-Please avoid interrupting the installation process.
-
-Once the installer reports that installation has completed successfully, you can proceed to the initial setup.
-
-If Windows or the installer requests a restart, complete it before continuing.
+Disabling antivirus protection alone does not necessarily resolve driver-signing or Windows security policy restrictions. Record the exact driver error and consult the troubleshooting guidance before making further security changes.
 
 ---
 
-## 4. First-Time Setup
+## 4. Installing Avalon
 
-Congratulations! Avalon should now be installed on your Windows host.
+Before running the installer, confirm that your Windows edition and architecture are supported, review Section 2, and resolve conflicts involving ASTER, RDPWrap, or `termsrv.dll`-related tools or patches.
 
-The next step is to open its Web Management Panel and initialize your administrator account.
+### 4.1 Download the Installer
 
-### 4.1 Open the Web Management Panel
+Download Avalon from an official source:
 
-Open a web browser and navigate to:
+- [Official website](https://avalons.cc)
+- [GitHub Releases](https://github.com/AvalonStream/AvalonStream/releases)
+
+The installer filename follows the format `Avalon-Setup-x.x.x.exe`, where `x.x.x` is the version number.
+
+### 4.2 Run the Installation Wizard
+
+1. **Launch the installer.** Double-click `Avalon-Setup-x.x.x.exe` and approve the Windows administrator permission prompt.
+2. **Choose a language.** You can change the interface language later in the Avalon Web Management Panel without reinstalling.
+3. **Review the license agreement and notices.** Accept them to continue, or cancel if you do not agree.
+4. **Choose an installation directory.** The default location is recommended for most users; a custom location is also available.
+5. **Choose whether to create a desktop shortcut.** This is optional and does not affect core functionality.
+6. **Select Install.** Allow the installer to finish configuring the required services, session components, and virtual display functionality. Do not interrupt the process.
+7. **Restart if prompted.** Complete any requested Windows restart before proceeding to setup.
+
+---
+
+## 5. First-Time Setup
+
+### 5.1 Open the Web Management Panel
+
+Open a browser and visit:
 
 `https://YOUR_HOST_IP:48080`
 
-Replace `YOUR_HOST_IP` with the IP address of the Windows computer running Avalon.
-
-For example:
+Replace `YOUR_HOST_IP` with the IP address of the Windows computer running Avalon. For example:
 
 `https://192.168.1.100:48080`
 
-Make sure you are using **HTTPS** and the correct port number, **48080**.
+Use **HTTPS** and port **48080**. If connecting from another device, make sure it can reach the Windows host over the network.
 
-If accessing Avalon from another device, ensure that the device can reach your Windows host over the network.
+If the browser displays a certificate warning, verify that you are connecting to the intended Avalon host before proceeding. Keep the management interface accessible only from trusted networks.
 
-If your browser displays a certificate warning, verify that you are connecting to your intended Avalon host before proceeding.
+### 5.2 Create Your Administrator Account
 
-For security reasons, we recommend keeping the management interface accessible only from trusted networks.
+On first access, follow the on-screen instructions to set an administrator username, create a strong password, confirm your credentials, and complete initialization.
 
-### 4.2 Create Your Administrator Account
+Keep these credentials secure; they protect access to the Avalon Web Management Panel.
 
-When accessing Avalon for the first time, you will be prompted to configure your administrator credentials.
+### 5.3 Create and Start an Instance
 
-Follow the on-screen instructions to:
+1. **Create an instance** in the Web Management Panel.
+2. Configure its display and other available settings.
+3. **Start the instance.**
+4. Pair the Moonlight client with the corresponding instance.
+5. Connect through Moonlight to use the independent Windows desktop.
 
-1. Set your administrator username.
-2. Create a secure password.
-3. Confirm your credentials.
-4. Complete the initialization process.
-
-**Please remember your username and password.**
-
-These credentials protect access to the Avalon Web Management Panel.
-
-### 4.3 Start Using Avalon
-
-After initialization, you will be able to access the Avalon management interface.
-
-From here, you can begin managing your desktop instances.
-
-The basic workflow is:
-
-1. **Create an instance** using the Web Management Panel.
-2. Configure the instance's display and other available settings.
-3. **Start the instance** after creation.
-4. Pair your Moonlight client with the corresponding instance.
-5. Connect using Moonlight and enjoy your independent Windows desktop.
-
-> **Note:** Creating an Avalon instance does not automatically start it. Make sure the instance is running before attempting to connect.
-
-That's it!
-
-**Your Avalon environment is now ready to use.**
-
-One Windows host. Multiple independent desktop experiences.
+> **Note:** Creating an instance does not automatically start it. Start the instance before attempting to connect.
 
 ---
 
-## 5. Troubleshooting Installation & Runtime Issues
+## 6. Troubleshooting
 
-Although we aim to make Avalon as reliable and straightforward as possible, compatibility problems can occasionally occur due to the complexity of Windows session management, drivers, hardware, and security software.
+Check the known issues in Section 2 first, then use the guidance that matches your symptoms. Security software is one possible cause; Windows compatibility, drivers, host resources, and Avalon defects can also be involved.
 
-If you encounter problems, please don't panic.
+### 6.1 Instances Cannot Be Created, Started, or Restarted
 
-The following recommendations may help.
+Check the following:
 
-### 5.1 Instances Cannot Be Created, Started, or Restarted
+1. **Conflicting software:** Look for ASTER, RDPWrap, or `termsrv.dll`-related tools or patches. Resolve the conflicts described in Section 2 before retrying.
+2. **Security software interference:** Review Microsoft Defender or third-party protection history and quarantine records, even if no warning appeared. Follow Section 3 if an Avalon component was blocked.
+3. **Windows compatibility:** Confirm the Windows edition, architecture, version, and OS build against Section 1.
+4. **Driver restrictions:** Check whether Windows rejected a required driver or prevented it from loading. Record the exact error.
+5. **Incomplete installation:** Confirm that installation completed successfully with administrator privileges and that any requested restart was completed.
+6. **Host resources and graphics drivers:** Review available resources, GPU drivers, and diagnostic information provided by Avalon.
 
-If an instance fails to initialize, start, or restart correctly, investigate the following possibilities:
+### 6.2 The Web Management Panel Cannot Be Accessed
 
-1. **Antivirus interference:** Check whether Microsoft Defender or another security application has blocked or quarantined any Avalon component.
-2. **Windows compatibility:** Confirm your Windows edition, architecture, and build number.
-3. **Driver restrictions:** Check whether Windows has rejected or prevented a required driver from loading.
-4. **Incomplete installation:** Verify that Avalon was installed successfully with administrator privileges.
-5. **Resource or compatibility issues:** Review available host resources, GPU drivers, and any diagnostic information provided by Avalon.
-
-Security software may interfere silently, so it is worth reviewing its protection history even when no obvious warning appeared.
-
-However, please do not assume every failure is caused by antivirus software.
-
-### 5.2 The Web Management Panel Cannot Be Accessed
-
-If `https://YOUR_HOST_IP:48080` does not open, check the following:
+If `https://YOUR_HOST_IP:48080` does not open:
 
 - Confirm that Avalon is installed and its required services are running.
-- Verify that you entered the correct host IP address.
-- Make sure you are using HTTPS rather than HTTP.
-- Confirm that port `48080` is correct.
-- Check that your Windows Firewall or network configuration is not blocking the connection.
-- If accessing the panel from another computer, verify network connectivity between both devices.
+- Check the host IP address, **HTTPS** scheme, and port **48080**.
+- Check whether Windows Firewall or the network configuration is blocking the connection.
+- If connecting from another device, verify network connectivity to the host.
+- Review security software records to see whether Avalon was prevented from starting.
 
-Also check whether your antivirus software has prevented Avalon from starting normally.
+### 6.3 Reinstalling Avalon
 
-### 5.3 Reinstalling Avalon
+Reinstalling may help with incomplete or interrupted installation, but it is not guaranteed to resolve every problem. Resolve known software conflicts before reinstalling.
 
-If the installation appears corrupted or important components continue to malfunction, a complete reinstall may help.
+1. Back up `license.dat` if Avalon has been activated, and save important settings.
+2. Disconnect streaming clients and stop running Avalon instances.
+3. Review the known issues in Section 2 and resolve any ASTER, RDPWrap, or `termsrv.dll`-related conflict.
+4. Check protection history for blocked components. If security software is interfering, follow Section 3 before retrying the affected removal or installation operation.
+5. Uninstall Avalon using the procedure in Section 8, and restart if prompted.
+6. Download a fresh installer from an official source and run it with administrator privileges.
+7. Complete any requested restart, open the Web Management Panel, and import your saved `license.dat` if needed.
+8. Restore any security protections temporarily disabled during troubleshooting.
 
-Before reinstalling:
+### 6.4 Report an Unresolved Issue
 
-1. Back up your `license.dat` file if Avalon has been activated.
-2. Save any important settings or information you may need later.
-3. Stop active Avalon instances and disconnect streaming clients.
-4. Review antivirus protection history and investigate any blocked components.
-5. Uninstall Avalon using its normal uninstallation procedure.
-6. If a security product is confirmed to be interfering, temporarily adjust its protection settings as described earlier.
-7. Download a fresh copy of the Avalon installer from an official source.
-8. Run the installer with administrator privileges.
-9. Restore your license using the Web Management Panel if necessary.
-10. Re-enable any security protections you temporarily disabled.
+Search [Avalon GitHub Issues](https://github.com/AvalonStream/AvalonStream/issues) for a matching report. Review any available workaround or update before opening a new issue.
 
-A clean reinstall may resolve issues caused by incomplete component registration, interrupted setup operations, or security software interference.
-
-**However, reinstalling Avalon is not guaranteed to resolve every problem.**
-
-### 5.4 Still Not Working? Report an Issue
-
-If the problem persists even after following the troubleshooting steps, it may be caused by an Avalon software defect, an unsupported configuration, or another issue that has not yet been identified.
-
-As with any software involving complex system-level operations, bugs can occasionally occur.
-
-We welcome bug reports and feedback from the community.
-
-Please visit our GitHub Issues page:
-
-**[Avalon — GitHub Issues](https://github.com/AvalonStream/AvalonStream/issues)**
-
-Before creating a new issue:
-
-1. Search existing issues to see whether someone has already reported the same problem.
-2. If a matching issue exists, review any available solutions or updates.
-3. If no matching issue exists, create a new issue describing your problem.
-
-When reporting a bug, please include as much relevant information as possible:
+Include:
 
 - Avalon version.
-- Windows edition, version, and OS build.
+- Windows edition, version, architecture, and OS build.
 - CPU and GPU models.
-- Antivirus or security software in use.
-- A clear description of the problem.
-- Steps required to reproduce the issue.
+- Antivirus or security software in use, and any relevant blocking events.
+- Whether ASTER, RDPWrap, or `termsrv.dll`-related tools or patches are installed or have previously been used.
+- A clear description of the problem and steps to reproduce it.
 - Relevant error messages, screenshots, or diagnostic logs.
+- Troubleshooting steps already attempted and their results.
 
 **Do not publicly share passwords, CDKEYs, `license.dat` files, payment information, or links containing private access tokens.**
 
-Providing detailed information will help the maintainers and community understand and investigate the issue more efficiently.
-
-Please allow some time for a maintainer or community member to respond.
-
-Your feedback helps us improve Avalon for everyone.
-
 ---
 
-## 6. License Activation
+## 7. License Activation
 
-Avalon supports multiple license activation methods.
+Activate Avalon by purchasing a license through the official website or redeeming a CDKEY. Both methods use a `license.dat` file that you should keep for future restoration.
 
-Depending on how you obtain your license, you can activate Avalon by purchasing a license through the official website or redeeming a CDKEY.
-
-Please read the appropriate section below.
-
-### 6.1 Method A — Purchase and Activate a License
-
-If you would like to purchase an Avalon license, you can initiate the purchase directly from the Web Management Panel.
+### 7.1 Method A — Purchase and Activate a License
 
 #### Step 1 — Open the Purchase Page
 
-In the Avalon Web Management Panel, navigate to:
+In the Web Management Panel, select **More → Buy License** to open the official Avalon purchase page.
 
-**More → Buy License**
+#### Step 2 — Enter Your Information and Complete Payment
 
-You will be redirected to the official Avalon purchase page.
+Enter the required purchase information, including an accessible email address and your preferred payment method. A backup license file will be sent to that email after payment confirmation.
 
-#### Step 2 — Enter Your Purchase Information
+Select the purchase button, allow the checkout interface to load, and follow the payment instructions. Avoid repeatedly submitting the purchase request while it is loading.
 
-On the purchase page, provide the required information, including:
+#### Step 3 — Download `license.dat`
 
-- Your email address.
-- Your preferred payment method.
-- Any other information required by the checkout process.
+After payment is confirmed, you will be redirected to the license download page. Processing time can vary with the network connection and payment provider.
 
-**Please enter a valid email address that you can access.**
+**The license download page is valid for 24 hours. Download `license.dat` promptly.**
 
-Your email address is important because a backup copy of your license will be delivered there after successful payment.
+If you close the page:
 
-#### Step 3 — Complete Payment
+- **Before payment is complete:** Return to the purchase page and continue as appropriate.
+- **After payment is complete:** Return to the license retrieval page within the 24-hour window, or use the backup copy sent to your purchase email. Check spam or junk folders if necessary.
 
-Click the purchase button on the official website.
+#### Step 4 — Check Activation or Import the License
 
-A secure checkout interface will appear.
+Return to the Web Management Panel and check the activation status. Avalon may automatically detect the completed purchase and activate the license.
 
-Depending on your network connection, it may take a few moments for the checkout interface to load.
+If it has not activated automatically:
 
-Please avoid repeatedly submitting the purchase request while the page is loading.
+1. Download `license.dat` from the download page or purchase email.
+2. Select **Import License** in the Web Management Panel.
+3. Choose the file and follow the on-screen instructions.
+4. Confirm that the activation status updates after validation.
 
-Follow the payment instructions and complete your purchase.
+Keep a secure backup of the file as described in Section 7.3.
 
-#### Step 4 — Download Your License
+### 7.2 Method B — Activate Using a CDKEY
 
-After your payment has been successfully processed, please allow some time for the system to confirm your transaction.
+1. Open the license management section of the Web Management Panel.
+2. Select **Redeem CDKEY**.
+3. Enter your CDKEY carefully and submit it.
+4. If the key is valid and redemption succeeds, Avalon automatically activates the corresponding license.
+5. Download or save `license.dat` when prompted, and keep a secure backup.
 
-Processing times may vary depending on your network connection and payment provider.
+To restore the license after reinstalling Windows on the same licensed device, import the saved `license.dat` as described below; you do not need to repeat the original CDKEY redemption.
 
-Once the payment is confirmed, you will be redirected to a **License Download Page**.
+### 7.3 Back Up and Restore Your License
 
-From this page, you can download your license file:
+**Keep `license.dat` in secure private storage outside the Windows system drive**, such as a backup drive. Do not share the file publicly.
 
-`license.dat`
+After reinstalling Avalon or Windows:
 
-**Important: The license download page remains valid for 24 hours.**
+1. Install Avalon on the same licensed device.
+2. Open the Web Management Panel.
+3. Select **Import License** and choose your saved `license.dat`.
+4. Follow the prompts and confirm the activation status.
 
-We strongly recommend downloading your license immediately after completing your purchase.
-
-#### Step 5 — What If You Accidentally Close the Page?
-
-Don't worry!
-
-If you accidentally close the page before completing your purchase, you can return to the purchase page and continue as appropriate.
-
-If payment has already been completed, you can return to the license retrieval page while the corresponding 24-hour download window remains valid.
-
-For additional protection against accidental data loss, the Avalon licensing system also sends a backup copy of your `license.dat` file to the email address provided during checkout after receiving successful payment confirmation.
-
-If you cannot find the email, please check your spam or junk folder.
-
-This ensures that you have an additional way to retrieve your license even if you accidentally close the download page.
-
-#### Step 6 — Activate Avalon
-
-After purchasing your license, return to the Avalon Web Management Panel.
-
-In some cases, Avalon may have already detected your successful purchase and **automatically activated your license**.
-
-If your license is already active, no further action is required.
-
-If Avalon has not activated automatically, you can activate it manually:
-
-1. Download `license.dat` from the license download page or your purchase confirmation email.
-2. Open the Avalon Web Management Panel.
-3. Find the **Import License** option.
-4. Select your `license.dat` file.
-5. Follow the on-screen instructions to complete activation.
-
-Once the license has been successfully imported and validated, Avalon should display the updated activation status.
-
-#### Step 7 — Keep Your License File Safe
-
-**Please keep a secure backup of your `license.dat` file.**
-
-This file is important for restoring your license after reinstalling Avalon or Windows.
-
-We recommend storing it in a safe location outside your Windows system drive, such as a personal backup drive or secure private storage.
-
-Your license is associated with the licensed device. Reinstalling Windows on the same device can be supported using the saved license file, but significant hardware changes, including changes to the motherboard or system drive, may affect activation.
-
-Do not share your license file publicly.
+The license is associated with the licensed device. Restoration on that device can use the saved file, including offline restoration where supported. Significant hardware changes, including changes to the motherboard or system drive, may affect activation.
 
 ---
 
-### 6.2 Method B — Activate Using a CDKEY
+## 8. Uninstalling Avalon
 
-If you have received a valid Avalon CDKEY, the activation process is straightforward.
-
-#### Step 1 — Open the Web Management Panel
-
-Open the Avalon Web Management Panel and locate the license management section.
-
-Click:
-
-**Redeem CDKEY**
-
-#### Step 2 — Enter Your CDKEY
-
-Enter the CDKEY you received into the provided input field.
-
-Make sure the key has been entered correctly.
-
-Submit the key to begin the redemption process.
-
-If your CDKEY is valid and the redemption succeeds, Avalon will automatically activate the corresponding license.
-
-#### Step 3 — Save Your License File
-
-After successful CDKEY redemption, Avalon will prompt you to download or save a file named:
-
-`license.dat`
-
-**Please make sure you save this file and keep a backup.**
-
-This step is extremely important.
-
-Your `license.dat` file serves as a reusable local license file for the licensed device.
-
-#### Step 4 — Restore Your License After Reinstalling Windows
-
-If you reinstall Windows in the future, you do not need to repeat the original CDKEY redemption process to restore the license on the same licensed device.
-
-Instead:
-
-1. Reinstall Avalon on your Windows system.
-2. Open the Avalon Web Management Panel.
-3. Navigate to **Import License**.
-4. Select your previously saved `license.dat` file.
-5. Import the file and complete the activation process.
-
-Your license can be restored using the saved file, including offline restoration on the same licensed device where supported.
-
-Please note that significant hardware changes may affect device-bound license validity.
-
----
-
-## 7. Uninstalling Avalon
-
-If you decide to uninstall Avalon, we recommend preparing your system before removal.
-
-### Before Uninstalling
+### 8.1 Before Uninstalling
 
 1. Disconnect active streaming clients and stop running Avalon instances where possible.
-2. Back up your `license.dat` file if you have activated Avalon.
-3. Save any important configuration information you wish to preserve.
-4. Review Windows Security or antivirus settings if you have previously encountered component-blocking issues.
+2. Back up `license.dat` if Avalon has been activated.
+3. Save any configuration information you want to retain.
+4. If you have encountered blocked components, review Windows Security or antivirus records. Follow Section 3 if interference affects removal.
 
-If security software interferes with the uninstallation process, you may temporarily adjust its protection settings using the guidance in Section 2.
-
-### Uninstallation Procedure
+### 8.2 Remove Avalon
 
 1. Open **Windows Settings**.
-2. Navigate to **Apps → Installed apps** on Windows 11, or **Apps & features** on Windows 10.
-3. Locate Avalon in the installed application list.
-4. Select **Uninstall** and follow the instructions.
+2. Go to **Apps → Installed apps** on Windows 11, or **Apps → Apps & features** on Windows 10.
+3. Find Avalon and select **Uninstall**.
+4. Follow the instructions and approve administrator permission prompts as needed.
+5. Allow removal to finish and restart Windows if prompted.
 
-Alternatively, use the Avalon uninstaller provided with your installation, if available.
+Alternatively, use the Avalon uninstaller included with the installation, if available.
 
-Allow the removal process to finish and restart Windows if prompted.
-
-If uninstallation fails, consult the troubleshooting section and check for blocked components before trying again.
-
-**Remember to restore any security protections that were temporarily disabled during the removal process.**
+If removal fails, check for blocked components and consult Section 6 before retrying. **Restore any security protections temporarily disabled during removal.**
 
 ---
 
-## 8. Additional Notes & Recommendations
+## 9. Additional Recommendations
 
-For the best possible Avalon experience, please keep the following points in mind:
-
-- **Keep Windows updated.** Supported Windows versions with current security updates are recommended.
-- **Keep your GPU drivers updated.** Graphics drivers can significantly affect streaming compatibility and performance.
-- **Use a reliable network.** Network quality can directly affect streaming stability and latency.
-- **Keep a license backup.** Always retain a copy of `license.dat` after activation.
-- **Review security software warnings.** Unexpected failures may be related to quarantined files, restricted services, or driver-loading problems.
-- **Protect the management interface.** Use a strong administrator password and avoid exposing the Web Management Panel directly to untrusted networks.
-- **Check compatibility before reporting a bug.** Some hardware, game anti-cheat systems, encoders, and Windows configurations may behave differently.
-- **Stay informed.** New Avalon releases may contain important bug fixes, compatibility improvements, and additional features.
+- **Keep Windows and GPU drivers updated.** Use a supported Windows version with current security updates and review graphics driver updates for compatibility and performance improvements.
+- **Use a reliable network.** Network quality affects streaming stability and latency.
+- **Keep a license backup.** Retain `license.dat` after activation and before reinstalling Avalon or Windows.
+- **Review security events.** Unexpected failures may involve quarantined files, restricted services, or driver-loading problems.
+- **Check for software conflicts.** Review Section 2 when changing multiseat software or Remote Desktop tools and patches.
+- **Protect the management interface.** Use a strong administrator password and keep the Web Management Panel on trusted networks.
+- **Check configuration-specific compatibility.** Hardware, game anti-cheat systems, encoders, and Windows configurations may behave differently.
+- **Review Avalon release notes.** New releases may include bug fixes, compatibility improvements, and additional features.
 
 ---
 
-## 9. Support & Community
+## 10. Support and Community
 
-If you need help, discover a bug, or would like to suggest a new feature, you are welcome to participate in our community.
+Use the official channels for downloads, bug reports, and feature suggestions:
 
-**Official Website:** https://avalons.cc
+- [Official website](https://avalons.cc)
+- [GitHub repository](https://github.com/AvalonStream/AvalonStream)
+- [Bug reports and issues](https://github.com/AvalonStream/AvalonStream/issues)
+- [Latest releases](https://github.com/AvalonStream/AvalonStream/releases)
 
-**GitHub Repository:** https://github.com/AvalonStream/AvalonStream
-
-**Bug Reports & Issues:** https://github.com/AvalonStream/AvalonStream/issues
-
-**Latest Releases:** https://github.com/AvalonStream/AvalonStream/releases
-
-We appreciate every bug report, suggestion, and contribution.
-
-Avalon is continuously evolving, and community feedback plays an important role in helping us improve stability, compatibility, and the overall user experience.
-
-Thank you for choosing Avalon!
-
-**One Host. Multiple Instances. Endless Possibilities.**
+For an unresolved problem, include the information listed in Section 6.4 so maintainers can investigate it efficiently.
