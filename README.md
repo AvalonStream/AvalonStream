@@ -1,319 +1,135 @@
-<!-- avalon-readme-revision: 2026-10-18.1 -->
+<!-- avalon-readme-revision: 2026-11-15.1 -->
 
 <div align="center">
 
 # Avalon
 
-### One Windows 10/11 x64 PC. Multiple independent desktops.
+### One Windows PC. Multiple independent desktops.
 
-Turn a single Windows 10/11 x64 machine into multiple independently accessible desktop instances, each with its own display, input, audio, applications, and remote streaming connection.
+Run separate Windows desktop instances on one host, each with its own display, input, audio playback, applications, and Moonlight connection.
+
+**Avalon 1.1.0 is available.**
+
+[Download for Windows x64](https://github.com/AvalonStream/AvalonStream/releases/download/v1.1.0/Avalon-Setup-1.1.0.exe) · [Release notes](https://github.com/AvalonStream/AvalonStream/releases/tag/v1.1.0) · [HDR and controller guide](HDR-Controller-README.md) · [Website](https://avalons.cc/)
 
 **One host. Multiple instances.**
 
 </div>
 
----
-
 ## What is Avalon?
 
-Avalon is a multi-session desktop streaming platform for Windows 10/11 x64.
-
-Instead of letting one PC serve only one interactive desktop at a time, Avalon allows the same machine to host multiple independent Windows instances simultaneously.
-
-Each instance can have its own:
-
-- Windows desktop session
-- Virtual display
-- Resolution and refresh rate
-- Input stream
-- Audio stream
-- Applications and games
-- Remote Moonlight connection
-
-This makes it possible for one powerful PC to behave more like several remotely accessible computers, without requiring a full virtual machine for every user.
-
----
-
-## What does this look like?
-
-Imagine one Windows 10/11 x64 PC running three Avalon instances:
+Avalon is a multi-session desktop streaming platform for Windows 10/11 x64. It lets several users connect to separate desktops on the same PC without running a full virtual machine for each user.
 
 ```text
                 Windows 10/11 x64 Host
-                       │
-                ┌──────┴──────┐
-                │    Avalon    │
-                └──────┬──────┘
-                       │
-         ┌─────────────┼─────────────┐
-         │             │             │
-         ▼             ▼             ▼
-    Instance 01    Instance 02    Instance 03
-         │             │             │
-         ▼             ▼             ▼
-     Moonlight      Moonlight      Moonlight
-        TV            Tablet         Laptop
+                         │
+                      Avalon
+                         │
+           ┌─────────────┼─────────────┐
+           │             │             │
+      Instance 01    Instance 02    Instance 03
+           │             │             │
+       Moonlight      Moonlight      Moonlight
+          TV            Tablet         Laptop
 ```
 
-Each client connects to its own Windows desktop.
+Each instance has a separate Windows session and streaming connection. One person can play on a TV while another uses a tablet or laptop for a different game or application.
 
-The instances run side by side without sharing the same desktop, mouse cursor, audio output, or application session.
+Instances share the host's Windows installation, kernel, CPU, GPU, memory, and storage. Avalon provides **session-level isolation**, not a VM-grade security boundary.
 
----
+## Features
 
-## Why Avalon?
+| Feature | What you can do |
+| --- | --- |
+| **Independent desktops and streams** | Run separate applications, games, and audio playback in each Windows session. |
+| **Virtual displays** | Set resolution and refresh rate per instance without a physical monitor for every desktop. |
+| **Keyboard and mouse** | Use the new RDS input backend for session-specific input, including supported UAC interactions. The existing SendInput option remains available. |
+| **Controllers** | Use Xbox, PlayStation, and Nintendo Switch-family controllers with automatic or manual profile selection. Advanced features depend on the controller, client, Windows, and game. |
+| **Optional HDR** | Configure HDR per instance, view readiness in Environment Health, and check the running stream's encoding status. |
+| **Touch and pen input** | Forward native screen touch and stylus events from compatible Moonlight clients. Device and application support vary. |
+| **Flexible instance creation** | Use quick or custom creation, multilingual names, new local accounts, existing accounts, and generated strong passwords. |
+| **Session management** | Start, stop, and recover instances centrally, including restoration of previously running instances after a host restart. No external RDP client needs to stay connected. |
+| **Installation and updates** | Install, uninstall, and perform configuration-preserving reinstalls or updates using the native setup and recovery system. |
+| **Web management** | Manage pairing, display/input settings, activation, environment health, and diagnostics in one panel. |
 
-Traditional remote desktop tools are usually designed around one user controlling one desktop.
+Version 1.1.0 also improves pairing, remote text rendering, application compatibility, update recovery, activation compatibility, and log retention. See the [release notes](https://github.com/AvalonStream/AvalonStream/releases/tag/v1.1.0) for the changes since 1.0.2.
 
-Virtual machines solve isolation well, but they also add additional operating systems, memory overhead, storage usage, GPU complexity, and management cost.
+## Requirements
 
-Avalon takes a different approach.
+These requirements apply to the **PC running Avalon**. The Moonlight client can use a different operating system.
 
-It builds on Windows sessions, virtual displays, independent streaming processes, and centralized lifecycle management so that multiple interactive desktops can coexist on one Windows 10/11 x64 host.
+| Item | Requirement |
+| --- | --- |
+| **Host Windows** | A supported x64 desktop edition of **Windows 10 2004 (build 19041) or later**, including Windows 11. |
+| **Outside the installation support range** | Windows 10 1903/1909, Windows Home, Windows Server, 32-bit Windows, and Windows on ARM. |
+| **Permissions** | Administrator permission for installation, removal, and maintenance. |
+| **Graphics and resources** | Compatible graphics hardware/drivers and sufficient CPU, RAM, and encoding capacity for the streams you want to run. |
+| **Client** | A compatible Moonlight app and a network connection suitable for the requested resolution and frame rate. |
 
-The complexity stays inside Avalon.
+Moonlight clients are available for Windows, Linux, macOS, Android, iOS/iPadOS, and compatible TV/streaming devices. Features differ between platforms and client versions.
 
-For the user, the workflow is simple:
+**HDR and advanced controller features have additional requirements.** Check the [HDR and controller support guide](HDR-Controller-README.md) for Windows versions, controller models, Elite paddles, Series Share, PlayStation extensions, and touch/pen limitations.
 
-```text
-Create an instance
-        ↓
-Configure display and pairing
-        ↓
-Open Moonlight
-        ↓
-Connect
-```
+The installer includes test-signed drivers, not WHQL-certified drivers. Windows security policies can affect installation and loading.
 
----
+## Get started
 
-## Core capabilities
+1. [Download Avalon 1.1.0](https://github.com/AvalonStream/AvalonStream/releases/download/v1.1.0/Avalon-Setup-1.1.0.exe) and install it from a normal logged-in Windows desktop with administrator permission.
+2. Open the host's management panel at **[https://localhost:48080](https://localhost:48080)** and complete the initial setup. It uses a local HTTPS certificate; verify the device/address before proceeding through a certificate warning.
+3. Create an instance using quick or custom creation, then **start it**. Creating an instance does not automatically start it.
+4. Add the instance's host address and streaming port, as shown by Avalon, to Moonlight. Enter Moonlight's pairing PIN in that instance's pairing page in Avalon.
+5. Connect to Desktop or a configured application. Complete any Windows first-user setup if prompted.
 
-### Multiple independent instances
+Use the instance's streaming port for Moonlight; port **48080** is the management panel. Configure HDR and controller profiles using the [support guide](HDR-Controller-README.md).
 
-Run multiple Windows desktop sessions on the same host at the same time.
+## Upgrading and reinstalling
 
-Each instance behaves as its own interactive desktop environment.
+Back up your configuration and **license.dat** before maintenance.
 
-### Independent streaming
+| Installed version | How to proceed |
+| --- | --- |
+| **1.0.2 or earlier** | Uninstall the old version before installing 1.1.0. In-place updating from these versions is not supported. |
+| **1.1.0 baseline or later** | Run an installer for the same or a newer version and choose reinstall/update. The maintenance workflow preserves configuration and provides rollback/recovery if the operation fails. |
 
-Every instance has its own streaming context and can be connected to independently using a Moonlight client.
+Maintenance may stop instances and disconnect remote sessions. Save work inside those instances first. Follow any restart or pending-recovery instructions in the installer; do not manually delete recovery files while an operation is incomplete.
 
-A television can connect to one instance while a tablet or another computer connects to another.
+When removing instances or uninstalling, review the retain/discard choices. Accounts created by Avalon remain eligible for cleanup, including after reuse. Borrowed existing Windows accounts and the built-in Administrator account are protected from account cleanup.
 
-### Independent display
+## Free use and activation
 
-Each instance can use its own virtual display configuration, including resolution and refresh rate.
+| Mode | Limits |
+| --- | --- |
+| **Without activation** | One created instance, one running instance, and up to **60 FPS**. |
+| **Activated** | The limits granted by your license apply. The product-wide instance cap is **330**; practical concurrency depends on hardware, applications, and stream settings. |
 
-Display handling is managed by Avalon rather than requiring a physical monitor for every instance.
+Purchase from **More → Buy license** in the panel. Activation is device-bound; hardware identity changes may require support.
 
-### Independent input
+Keep a backup of **license.dat**. A valid perpetual activation can be verified offline and restored on the same eligible device after reinstalling Windows. Time-limited activation requires online time verification and expires on its stated date.
 
-Keyboard and mouse input are routed to the intended Windows session instead of being shared across instances.
+Activation does not guarantee a particular resolution, frame rate, HDR mode, or number of simultaneous streams. Windows, application, game, and account licensing requirements still apply.
 
-Avalon is also designed around per-instance device isolation as the input stack continues to evolve.
+## Compatibility notes
 
-### Independent audio
+- **HDR and controller extras:** availability depends on the host, client, device, and application. The support guide separates basic input from optional extensions.
+- **Mobile keyboards:** soft-keyboard text can fail at Windows UAC prompts in 1.1.0. General UAC mouse/keyboard support does not guarantee every mobile text-input method.
+- **Audio:** instances have independent playback. Client microphone passthrough is not included.
+- **Games and applications:** DRM, anti-cheat, account restrictions, and multi-session behavior vary; not every application supports simultaneous sessions.
+- **System updates:** Windows and graphics-driver updates can change compatibility. Check Environment Health and follow any restart or recovery guidance.
+- **Performance:** GPU/encoder capacity, resolution, refresh rate, codec, network quality, client decoding, and simultaneous instances all affect the result.
 
-Each instance uses its own Windows session audio path so users can listen to different applications or games without mixing audio between instances.
+## Support and feedback
 
-### Session lifecycle management
+- [HDR, controllers, and other client inputs](HDR-Controller-README.md)
+- [Downloads and previous versions](https://github.com/AvalonStream/AvalonStream/releases)
+- [Report a reproducible bug](https://github.com/AvalonStream/AvalonStream/issues)
+- [Questions and ideas](https://github.com/AvalonStream/AvalonStream/discussions)
+- [Avalon website](https://avalons.cc/)
 
-Avalon creates and maintains sessions itself.
-
-A separate external RDP client does not need to remain connected just to keep an instance alive.
-
-### Web management
-
-Instances are managed from one web interface.
-
-Typical operations include:
-
-- Create and remove instances
-- Start and stop instances
-- Configure resolution and refresh rate
-- Pair Moonlight clients
-- Inspect connection status
-- View diagnostics
-- Manage host-level settings
-
-No command-line workflow is required for normal day-to-day use.
-
----
-
-## Designed for Moonlight
-
-Avalon is built around the familiar Moonlight streaming experience.
-
-You can continue using Moonlight on devices such as:
-
-- Windows
-- Linux
-- macOS
-- Android
-- iOS / iPadOS
-- Android TV
-- Smart TVs and streaming devices supported by Moonlight
-
-Avalon changes how the host is organized.
-
-It does not require users to learn a completely new streaming client.
-
----
-
-## Use cases
-
-### Home gaming
-
-Turn one gaming PC into multiple independent gaming environments for different people in the same household.
-
-One person can play from the living room while another connects from a handheld or laptop.
-
-### Multi-account and multi-instance workloads
-
-Run different applications, accounts, or game sessions in separate Windows environments on the same machine.
-
-### Remote workstation access
-
-Use one powerful desktop as several independently accessible remote workspaces.
-
-### Testing and development
-
-Maintain multiple Windows sessions for software testing, automation, compatibility work, or isolated user environments.
-
-### Homelab and self-hosting
-
-Use a high-performance Windows machine as a centrally managed multi-user remote computing host.
-
----
-
-## How Avalon works
-
-Avalon internally coordinates several layers of the system:
-
-```text
-Web Management
-      │
-      ▼
-Avalon Control Service
-      │
-      ▼
-Windows Sessions
-Virtual Displays
-Streaming Processes
-Input / Audio Routing
-      │
-      ▼
-Moonlight Clients
-```
-
-The implementation underneath this model is intentionally hidden from normal users.
-
-You create an instance.
-
-Avalon prepares the session, display, streaming environment, and lifecycle.
-
-Then you connect.
-
----
-
-## Isolation model
-
-Avalon provides **Windows session-level isolation**.
-
-Each instance has its own interactive Windows session, desktop, applications, display, input path, and audio path.
-
-However, Avalon instances are **not full virtual machines**.
-
-They still share:
-
-- The same Windows host installation
-- The same kernel
-- The same physical CPU
-- The same physical GPU
-- The same host hardware resources
-
-Avalon should therefore not be treated as a VM-grade security boundary.
-
-Its goal is efficient multi-user and multi-desktop streaming, not hardware-level virtualization.
-
----
-
-## Current status
-
-**Avalon 1.0.2 is now available.**
-
-[Download Avalon for Windows x64](https://github.com/AvalonStream/AvalonStream/releases/download/v1.0.2/Avalon-Setup-1.0.2.exe) · [Release notes and previous versions](https://github.com/AvalonStream/AvalonStream/releases)
-
-- Supported hosts: Windows 10 x64 version 1903 (build 18362) or later, and Windows 11 x64. Windows Home editions, 32-bit Windows, and Windows on ARM are not supported.
-- The installer includes the host application, web management, session provider, and virtual display components. Administrator permission is required for installation and removal.
-- Create an instance, start it from the management panel, and pair your Moonlight client. Creating an instance does not automatically start it.
-- Without activation, Avalon supports one created instance, one running instance, and up to 60 FPS. A paid license removes these free-tier restrictions; the system-wide limit remains 330 instances, and practical concurrency depends on your hardware.
-- Purchase from **More → Buy license** in the Avalon panel. Keep the delivered **license.dat** file: it can restore a perpetual license on the same licensed device after reinstalling Windows, including while offline. Changes to the motherboard or system drive can affect device-bound activation.
-
-The 1.0.2 package currently includes test-signed virtual display drivers, not WHQL-certified drivers. Windows security policies can affect installation and loading.
-
-Hardware, encoder, game, anti-cheat, and network compatibility still vary. Intermittent audio issues on some cross-network IPv6 connections remain under investigation. Please report reproducible issues with the Windows version, GPU, client, and relevant logs; do not include passwords, license files, or purchase links containing private tokens.
-
----
-
-## Platform
-
-Current target:
-
-```text
-Windows 10 x64 / Windows 11 x64
-```
-
-Avalon is designed specifically around the Windows desktop and session model.
-
-Support for other host operating systems is not currently a project goal.
-
----
-
-## Performance
-
-Actual streaming performance depends on many factors, including:
-
-- GPU
-- Encoder support
-- Graphics driver
-- Resolution
-- Refresh rate
-- Codec
-- Network quality
-- Client decoding capability
-- Number of simultaneous instances
-
-Avalon does not guarantee a specific resolution, refresh rate, HDR mode, or number of concurrent instances on every system.
-
-Compatibility documentation will become more detailed as testing expands.
-
----
-
-## Project philosophy
-
-Avalon is built around a simple idea:
-
-> A powerful PC should not be limited to one screen, one desktop, and one user at a time.
-
-The host may be one machine.
-
-The experiences running on it do not have to be.
-
----
-
-## Development
-
-Future versions of Avalon are still in development. Stay tuned for a more reliable product, better performance, and support for more features!
-
-Report reproducible bugs through [GitHub Issues](https://github.com/AvalonStream/AvalonStream/issues). Use [GitHub Discussions](https://github.com/AvalonStream/AvalonStream/discussions) for questions, ideas, and community feedback.
+For a bug report, include your Avalon version, host Windows build, GPU/driver, client name/version, reproduction steps, and relevant diagnostics. Review logs before sharing them; do not post passwords, activation files, pairing PINs, or purchase links containing private tokens.
 
 ---
 
 <div align="center">
-
-### Avalon
 
 **One host. Multiple instances.**
 
