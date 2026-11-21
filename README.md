@@ -1,4 +1,4 @@
-<!-- avalon-readme-revision: 2026-11-15.2 -->
+<!-- avalon-readme-revision: 2026-11-21.1 -->
 
 <div align="center">
 
@@ -103,7 +103,7 @@ A television can connect to one instance while a tablet or another computer conn
 
 ### Independent display
 
-Each instance can use its own virtual display configuration, including resolution and refresh rate.
+Each instance can use its own virtual display configuration, including resolution and refresh rate. Supported changes apply when Moonlight reconnects.
 
 Display handling is managed by Avalon rather than requiring a physical monitor for every instance.
 
@@ -113,7 +113,7 @@ Optional HDR is available on compatible Windows 11 configurations. See the [HDR 
 
 Keyboard and mouse input are routed to the intended Windows session instead of being shared across instances.
 
-Avalon 1.1.0 adds an RDS keyboard and mouse backend alongside the existing SendInput option, plus Xbox, PlayStation, and Nintendo Switch-family controller support with automatic or manual profile selection.
+Avalon supports RDS and SendInput keyboard and mouse backends, plus Xbox, PlayStation, and Nintendo Switch-family controllers with automatic or manual profile selection. Avalon 1.1.1 improves controller isolation between the host desktop and streamed instances, including when supported controllers reconnect.
 
 Compatible Moonlight clients can also forward native screen touch and pen input. Advanced controller and pen/touch features depend on the client, device, Windows version, and application; see the [support guide](HDR-Controller-README.md).
 
@@ -131,7 +131,7 @@ Previously running instances can be restored after a Windows restart.
 
 ### Web management
 
-Instances are managed from one web interface.
+Instances are managed from one web interface, with startup progress available in all 18 panel languages.
 
 Typical operations include:
 
@@ -139,6 +139,7 @@ Typical operations include:
 - Start and stop instances
 - Configure resolution and refresh rate
 - Configure controller profiles and HDR preferences
+- Configure Steam launch options and set custom application cover art
 - Pair Moonlight clients
 - Inspect connection status
 - Check environment health
@@ -249,9 +250,9 @@ Its goal is efficient multi-user and multi-desktop streaming, not hardware-level
 
 ## Current status
 
-**Avalon 1.1.0 is now available.**
+**Avalon 1.1.1 is now available.**
 
-[Download Avalon for Windows x64](https://github.com/AvalonStream/AvalonStream/releases/download/v1.1.0/Avalon-Setup-1.1.0.exe) · [Release notes and previous versions](https://github.com/AvalonStream/AvalonStream/releases)
+[Download Avalon for Windows x64](https://github.com/AvalonStream/AvalonStream/releases/download/v1.1.1/Avalon-Setup-1.1.1.exe) · [Release notes and previous versions](https://github.com/AvalonStream/AvalonStream/releases)
 
 - Supported hosts: Windows 10 x64 version 2004 (build 19041) or later, and Windows 11 x64. Windows Home editions, Windows Server, 32-bit Windows, and Windows on ARM are not supported.
 - The installer includes the host application, web management, session provider, virtual display, and input components. Administrator permission is required for installation and removal.
@@ -259,11 +260,11 @@ Its goal is efficient multi-user and multi-desktop streaming, not hardware-level
 - Without activation, Avalon supports one created instance, one running instance, and up to 60 FPS. Paid activation applies the limits granted by your license; the system-wide limit remains 330 instances, and practical concurrency depends on your hardware.
 - Purchase from **More → Buy license** in the Avalon panel. Keep the delivered **license.dat** file: it can restore a perpetual license on the same licensed device after reinstalling Windows, including while offline. Changes to the motherboard or system drive can affect device-bound activation.
 
-When upgrading from 1.0.2 or earlier, back up your configuration and **license.dat**, uninstall the old version, then install 1.1.0. From the 1.1.0 baseline onward, installers for the same or a newer version support configuration-preserving reinstalls/updates with rollback and recovery if the operation fails.
+From 1.1.0 onward, run the same or a newer installer to reinstall or upgrade in place. Avalon keeps your existing instances, settings, and paired devices, with rollback and recovery support. If you are upgrading from 1.0.2 or earlier, back up your configuration and **license.dat**, uninstall the old version, then install 1.1.1.
 
-The 1.1.0 package includes test-signed drivers, not WHQL-certified drivers. Windows security policies can affect installation and loading.
+The 1.1.1 package includes test-signed drivers. Windows security policies can affect installation and loading.
 
-HDR and advanced controller support have additional requirements described in the [support guide](HDR-Controller-README.md). Mobile soft-keyboard text can fail at Windows UAC prompts in 1.1.0; native pen/touch support does not remove this limitation. Client microphone passthrough is not included.
+HDR and advanced controller support have additional requirements described in the [support guide](HDR-Controller-README.md). Mobile soft-keyboard text can fail at Windows UAC prompts, including on clients that support native pen or touch. Client microphone passthrough is not included.
 
 Hardware, encoder, game, anti-cheat, and network compatibility still vary. Intermittent audio issues on some cross-network IPv6 connections remain under investigation. Please report reproducible issues with the Windows version, GPU, client, and relevant logs; do not include passwords, license files, or purchase links containing private tokens.
 
